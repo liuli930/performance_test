@@ -1,0 +1,14 @@
+# 用于控制网络域（Network Domain）
+apiVersion: v1
+kind: Service
+metadata:
+  name: perf-mqtt
+  labels:
+    app: perf-mqtt
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: perf-mqtt

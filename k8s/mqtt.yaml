@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: perf-mqtt
+spec:
+  selector:
+    matchLabels:
+      app: perf-mqtt # has to match .spec.template.metadata.labels
+  serviceName: "perf-mqtt"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: perf-mqtt
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: python36
+        image: swc-harbor.nioint.com/sqe/evm_mocker:perf_test
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          name: web
+        command: ["/bin/bash","-c", "--"]
+        args: ["python3 /opt/performance_test/hb_mqtt_publish.py -n 500 -k -s 100"]
+#        args: [ "while true; do sleep 30; done;" ]
